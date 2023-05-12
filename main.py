@@ -1,28 +1,22 @@
-# This example requires the 'message_content' intent.
-import os
+# This requires the 'message_content' intent.
 import discord
-from dotenv import load_dotenv
-import os
+from discord.ext import commands
+import asyncio
+from config import TOKEN, COMMAND_PREFIX, EXTENSIONS
 
-load_dotenv()
+async def main():
+    intents = discord.Intents.default()
+    intents.message_content = True
 
-TOKEN: str = str(os.getenv('TOKEN'))
+    client = commands.Bot(command_prefix=COMMAND_PREFIX, intents=intents)
 
-intents = discord.Intents.default()
-intents.message_content = True
+    # Load all extensions listed in the config
+    for extension in EXTENSIONS:
+        await client.load_extension(extension)
 
-client = discord.Client(intents=intents)
+    await client.start(TOKEN)
 
-@client.event
-async def on_ready():
-    print(f'We have logged in as {client.user}')
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
-
-client.run(TOKEN)
