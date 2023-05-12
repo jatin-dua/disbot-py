@@ -14,6 +14,15 @@ class ModerationCog(commands.Cog):
         else:
             await ctx.send('You do not have permission to kick members.')
 
+    @commands.command(name='ban')
+    async def ban_command(self, ctx, member: discord.Member, *, reason=None):
+        if ctx.author.guild_permissions.ban_members:
+            await member.ban(reason=reason)
+            await ctx.send(f'{member.mention} has been banned from the server.')
+
+        else:
+            await ctx.send('You do not have permission to ban members.')
+
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
         # Check if the member's account is less than a day old
