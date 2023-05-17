@@ -11,5 +11,6 @@ COMMAND_PREFIX: str = '$'
 # Extensions to load when starting up the bot
 EXTENSIONS = [
     'cogs.general',
-    'cogs.moderation'
+    'cogs.moderation',
+    'cogs.events'
 ]
