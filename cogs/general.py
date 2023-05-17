@@ -1,18 +1,17 @@
 import discord
 from discord.ext import commands
-import utils.response
 
 class GeneralCog(commands.Cog):
-    def __init__(self, client: commands.Bot):
+    def __init__(self, client: commands.Bot) -> None:
         self.client = client
 
     @commands.Cog.listener()
-    async def on_ready(self):
+    async def on_ready(self) -> None:
         await self.client.change_presence(activity=discord.Game("Chess"))
-        print(f'Logged in as {self.client.user}')
+        print(f"[ OK ] {self.client.user} is Online")
     
     @commands.command(name="info")
-    async def botinfo(self, ctx: commands.Context):
+    async def botinfo(self, ctx: commands.Context) -> None:
         embed = discord.Embed(title="Bot Information", description="This bot was created by Jatin.", color=0x00ff00)
         embed.set_thumbnail(url=self.client.user.avatar)
         embed.add_field(name="Bot Name", value=self.client.user.name, inline=True)
@@ -23,5 +22,5 @@ class GeneralCog(commands.Cog):
         embed.set_footer(text=f"Powered by Discord.py v{discord.__version__}")
         await ctx.send(embed=embed)
 
-async def setup(client: commands.Bot):
+async def setup(client: commands.Bot) -> None:
     await client.add_cog(GeneralCog(client))

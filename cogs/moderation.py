@@ -12,25 +12,25 @@ class ModerationCog(commands.Cog):
         self.previous_author_id = 0
 
     @commands.command(name='kick')
-    async def kick_command(self, ctx, member: discord.Member, *, reason=None):
+    async def kick_command(self, ctx: commands.Context, member: discord.Member, *, reason=None) -> None:
         if ctx.author.guild_permissions.kick_members:
             await member.kick(reason=reason)
-            await ctx.send(f'{member.mention} has been kicked from the server.')
+            await ctx.reply(f"{member.mention} has been kicked from the server.")
 
         else:
-            await ctx.send('You do not have permission to kick members.')
+            await ctx.reply("You do not have permission to kick members.")
 
     @commands.command(name='ban')
-    async def ban_command(self, ctx, member: discord.Member, *, reason=None):
+    async def ban_command(self, ctx: commands.Context, member: discord.Member, *, reason=None) -> None:
         if ctx.author.guild_permissions.ban_members:
             await member.ban(reason=reason)
-            await ctx.send(f'{member.mention} has been banned from the server.')
+            await ctx.reply(f'{member.mention} has been banned from the server.')
 
         else:
-            await ctx.send('You do not have permission to ban members.')
+            await ctx.reply('You do not have permission to ban members.')
 
     @commands.command(name='mute')
-    async def mute_command(self, ctx: commands.Context, member: discord.Member, *, reason=None):
+    async def mute_command(self, ctx: commands.Context, member: discord.Member, *, reason=None) -> None: 
         if ctx.author.guild_permissions.mute_members:
             muted_role: discord.Role = discord.utils.get(ctx.guild.roles, name="muted")
 
@@ -40,23 +40,23 @@ class ModerationCog(commands.Cog):
                     await channel.set_permissions(muted_role, send_messages=False)
 
             await member.add_roles(muted_role)
-            await ctx.send(f'{member.mention} has been muted .')
+            await ctx.reply(f'{member.mention} has been muted .')
 
         else:
-            await ctx.send('You do not have permission to mute members.')
+            await ctx.reply('You do not have permission to mute members.')
 
     @commands.command(name='unmute')
-    async def unmute_command(self, ctx: commands.Context, member: discord.Member):
+    async def unmute_command(self, ctx: commands.Context, member: discord.Member) -> None:
         muted_role: discord.Role = discord.utils.get(ctx.guild.roles, name="muted")
 
         if ctx.author.guild_permissions.mute_members:
             await member.remove_roles(muted_role)
-            await ctx.send(f'{member.mention} has been unmuted .')
+            await ctx.reply(f'{member.mention} has been unmuted .')
 
         else:
-            await ctx.send('You do not have permission to unmute members.')
+            await ctx.reply('You do not have permission to unmute members.')
 
-    async def check_message_flood(self, message: discord.Message):
+    async def check_message_flood(self, message: discord.Message) -> None:
         # print(f"""
         # Previous Author ID: {self.previous_author_id}
         
