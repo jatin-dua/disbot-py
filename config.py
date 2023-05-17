@@ -11,5 +11,6 @@ COMMAND_PREFIX: str = '$'
 EXTENSIONS = [
     'cogs.general',
     'cogs.moderation',
-    'cogs.events'
+    'cogs.events',
+    'cogs.message'
 ]
