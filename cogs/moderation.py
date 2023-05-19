@@ -3,9 +3,11 @@ from discord.ext import commands
 from datetime import timedelta
 import utils.dtime
 import utils.errors
+import utils.moderation
 
 SPAM_LIMIT = 4
-TIME = timedelta(minutes=5.0)
+TIME = timedelta(minutes=10.0)
+WARN_LIMIT = 2
 
 
 class ModerationCog(commands.Cog):
@@ -91,6 +93,31 @@ class ModerationCog(commands.Cog):
 
     @timeout_command.error
     async def timeout_command_error(
+        self, ctx: commands.Context, error: commands.CommandError
+    ) -> None:
+        await ctx.reply(utils.errors.get_error_message(error, func=__name__))
+
+    @commands.command(name="warn")
+    @commands.has_permissions(moderate_members=True)
+    async def warn_command(self, ctx: commands.Context, member: discord.Member) -> None:
+        utils.moderation.add_warn(member.id)
+        warns = utils.moderation.get_warns(member.id)
+        print(f"{member.name} has {warns} warn(s).")
+
+        if warns == WARN_LIMIT:
+            await ctx.reply(
+                f"So long, {member.mention}! The exit doors are that way ➡️"
+            )
+            await member.kick()
+            return
+        
+        await ctx.reply(
+            f"{member.mention} Show good manners and treat others as you would like to be treated."
+        )
+        await member.timeout(TIME)
+
+    @warn_command.error
+    async def warn_command_error(
         self, ctx: commands.Context, error: commands.CommandError
     ) -> None:
         await ctx.reply(utils.errors.get_error_message(error, func=__name__))
