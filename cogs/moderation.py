@@ -27,13 +27,6 @@ class ModerationCog(commands.Cog):
         await member.kick(reason=reason)
         await ctx.reply(f"So long, {member.mention}! The exit doors are that way ➡️")
 
-    @kick_command.error
-    async def kick_command_error(
-        self, ctx: commands.Context, error: commands.CommandError
-    ) -> None:
-        logger.exception(error)
-        await ctx.reply(utils.errors.get_error_message(error, func=__name__))
-
     @commands.command(name="ban")
     @commands.has_permissions(ban_members=True)
     async def ban_command(
@@ -43,13 +36,6 @@ class ModerationCog(commands.Cog):
         await ctx.reply(
             f"Say farewell to {member.mention}! They've been banished to the Shadow Realm. 👻"
         )
-
-    @ban_command.error
-    async def ban_command_error(
-        self, ctx: commands.Context, error: commands.CommandError
-    ) -> None:
-        logger.exception(error)
-        await ctx.reply(utils.errors.get_error_message(error, func=__name__))
 
     @commands.command(name="mute")
     @commands.has_permissions(manage_roles=True)
@@ -64,13 +50,6 @@ class ModerationCog(commands.Cog):
         await member.add_roles(muted_role)
         await ctx.reply(f"Shh! {member.mention} has been muted.")
 
-    @mute_command.error
-    async def mute_command_error(
-        self, ctx: commands.Context, error: commands.CommandError
-    ) -> None:
-        logger.exception(error)
-        await ctx.reply(utils.errors.get_error_message(error, func=__name__))
-
     @commands.command(name="unmute")
     @commands.has_permissions(manage_roles=True)
     async def unmute_command(
@@ -81,13 +60,6 @@ class ModerationCog(commands.Cog):
         await member.remove_roles(muted_role)
         await ctx.reply(f"Breaking the silence! {member.mention} has been unmuted.")
 
-    @unmute_command.error
-    async def unmute_command_error(
-        self, ctx: commands.Context, error: commands.CommandError
-    ) -> None:
-        logger.exception(error)
-        await ctx.reply(utils.errors.get_error_message(error, func=__name__))
-
     @commands.command(name="timeout")
     @commands.has_permissions(moderate_members=True)
     async def timeout_command(
@@ -97,13 +69,6 @@ class ModerationCog(commands.Cog):
         await ctx.reply(
             f"Oh no, {member.mention} is in timeout! Think about your actions and reflect on the server rules."
         )
-
-    @timeout_command.error
-    async def timeout_command_error(
-        self, ctx: commands.Context, error: commands.CommandError
-    ) -> None:
-        logger.exception(error)
-        await ctx.reply(utils.errors.get_error_message(error, func=__name__))
 
     @commands.command(name="warn")
     @commands.has_permissions(moderate_members=True)
@@ -123,13 +88,6 @@ class ModerationCog(commands.Cog):
             f"{member.mention} Show good manners and treat others as you would like to be treated."
         )
         await member.timeout(TIME)
-
-    @warn_command.error
-    async def warn_command_error(
-        self, ctx: commands.Context, error: commands.CommandError
-    ) -> None:
-        logger.exception(error)
-        await ctx.reply(utils.errors.get_error_message(error, func=__name__))
 
     async def check_message_flood(self, message: discord.Message) -> None:
         self.message_count[message.author.id] = (
