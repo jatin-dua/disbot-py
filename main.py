@@ -1,11 +1,12 @@
-# This requires the 'message_content' intent.
 import discord
 from discord.ext import commands
 import asyncio
 from config import TOKEN, COMMAND_PREFIX, EXTENSIONS
+import utils.logger
 
 async def main() -> None:
     try:
+        logger = utils.logger.setup_logging(func=__name__)
         intents = discord.Intents.default()
         intents.message_content = True
 
@@ -18,17 +19,17 @@ async def main() -> None:
             try:
                 await client.load_extension(extension)
                 success += 1
-                print(f"[ OK ] Loaded {extension}")
+                logger.info(f"Loaded {extension}")
             
             except Exception as e:
-                print(f"[ ERROR ] {e}")
+                logger.exception(e)
         
-        print(f"[ SUMMARY ] Loaded {success}/{total_extensions} extensions")
+        logger.info(f"Loaded {success}/{total_extensions} extensions successfully")
 
         await client.start(TOKEN)
 
     except discord.errors.LoginFailure as e:
-        print(f"[ ERROR ] {e}")
+        logger.exception(e)
 
     finally:
         await client.close()

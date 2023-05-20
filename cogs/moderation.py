@@ -4,6 +4,9 @@ from datetime import timedelta
 import utils.dtime
 import utils.errors
 import utils.moderation
+import utils.logger
+
+logger = utils.logger.setup_logging(func=__name__)
 
 SPAM_LIMIT = 4
 TIME = timedelta(minutes=10.0)
@@ -28,6 +31,7 @@ class ModerationCog(commands.Cog):
     async def kick_command_error(
         self, ctx: commands.Context, error: commands.CommandError
     ) -> None:
+        logger.exception(error)
         await ctx.reply(utils.errors.get_error_message(error, func=__name__))
 
     @commands.command(name="ban")
@@ -44,6 +48,7 @@ class ModerationCog(commands.Cog):
     async def ban_command_error(
         self, ctx: commands.Context, error: commands.CommandError
     ) -> None:
+        logger.exception(error)
         await ctx.reply(utils.errors.get_error_message(error, func=__name__))
 
     @commands.command(name="mute")
@@ -63,6 +68,7 @@ class ModerationCog(commands.Cog):
     async def mute_command_error(
         self, ctx: commands.Context, error: commands.CommandError
     ) -> None:
+        logger.exception(error)
         await ctx.reply(utils.errors.get_error_message(error, func=__name__))
 
     @commands.command(name="unmute")
@@ -79,6 +85,7 @@ class ModerationCog(commands.Cog):
     async def unmute_command_error(
         self, ctx: commands.Context, error: commands.CommandError
     ) -> None:
+        logger.exception(error)
         await ctx.reply(utils.errors.get_error_message(error, func=__name__))
 
     @commands.command(name="timeout")
@@ -95,6 +102,7 @@ class ModerationCog(commands.Cog):
     async def timeout_command_error(
         self, ctx: commands.Context, error: commands.CommandError
     ) -> None:
+        logger.exception(error)
         await ctx.reply(utils.errors.get_error_message(error, func=__name__))
 
     @commands.command(name="warn")
@@ -110,7 +118,7 @@ class ModerationCog(commands.Cog):
             )
             await member.kick()
             return
-        
+
         await ctx.reply(
             f"{member.mention} Show good manners and treat others as you would like to be treated."
         )
@@ -120,6 +128,7 @@ class ModerationCog(commands.Cog):
     async def warn_command_error(
         self, ctx: commands.Context, error: commands.CommandError
     ) -> None:
+        logger.exception(error)
         await ctx.reply(utils.errors.get_error_message(error, func=__name__))
 
     async def check_message_flood(self, message: discord.Message) -> None:
@@ -132,7 +141,6 @@ class ModerationCog(commands.Cog):
             del self.message_count[self.last_author_id]
 
         if self.message_count[message.author.id] > SPAM_LIMIT:
-            # TODO: Store number of warns of each user and take action on them.
             await message.reply(
                 f"Too many messages, too little time! Timeout initiated for {message.author.mention}. See you on the other side!"
             )
