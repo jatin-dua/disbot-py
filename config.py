@@ -1,16 +1,17 @@
-from dotenv import load_dotenv
+""" This module contains the required config for the bot."""
 import os
+
+from dotenv import load_dotenv
 
 load_dotenv()
 
-TOKEN: str = os.getenv('TOKEN')
+TOKEN = os.getenv("TOKEN")
 
-COMMAND_PREFIX: str = '$'
+COMMAND_PREFIX = "$"
 
 # Extensions to load when starting up the bot
 EXTENSIONS = [
-    'cogs.general',
-    'cogs.moderation',
-    'cogs.events',
-    'cogs.message'
+    "cogs.general",
+    "cogs.moderation",
+    "cogs.message"
 ]
