@@ -2,7 +2,7 @@
 import discord
 from discord.ext import commands
 
-class MessageCommandsCog(commands.Cog):
+class Messages(commands.Cog):
     def __init__(self, client: commands.Bot):
         self.client = client
     
@@ -29,4 +29,4 @@ class MessageCommandsCog(commands.Cog):
             # await ctx.channel.send(f"Deleted {len(deleted)} message(s)")
 
 async def setup(client: commands.Bot):
-    await client.add_cog(MessageCommandsCog(client))
+    await client.add_cog(Messages(client))

@@ -2,13 +2,13 @@
 import discord
 from discord.ext import commands
 
-import utils.roles as roles
+import utils.roles
 import utils.logger
 
 logger = utils.logger.setup_logging(func=__name__)
 
 
-class RoleCommands(commands.Cog):
+class Roles(commands.Cog):
     def __init__(self, client: commands.Bot):
         self.client = client
 
@@ -30,7 +30,7 @@ class RoleCommands(commands.Cog):
         role : str
             Represents a Server role.
         """
-        role = roles.get_role(ctx, role)
+        role = utils.roles.get_role(ctx, role)
 
         if role is None:
             await ctx.reply(f"Oops! I cannot find the role you're asking for.")
@@ -56,7 +56,7 @@ class RoleCommands(commands.Cog):
         role : str
             Represents a Server role.
         """
-        role = roles.get_role(ctx, role)
+        role = utils.roles.get_role(ctx, role)
 
         if role is None:
             await ctx.reply(f"Oops! I cannot find the role you're asking for.")
@@ -70,4 +70,4 @@ class RoleCommands(commands.Cog):
 
 
 async def setup(client: commands.Bot):
-    await client.add_cog(RoleCommands(client))
+    await client.add_cog(Roles(client))

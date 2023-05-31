@@ -49,27 +49,6 @@ class BotInfo(commands.Cog):
 
         if f"<@{self.client.user.id}>" in message.content:
             # TODO: Implement a custom command prefix
-            # prefi = self.client.prefix_dict.get(
-            #     message.guild.id if message.guild is not None else None, "'"
-            # )
-
-            fields = [
-                {
-                    "name": "Servers", 
-                    "value": len(self.client.guilds), 
-                    "inline": False
-                },
-                {
-                    "name": "Users", 
-                    "value": len(self.client.users), 
-                    "inline": False
-                },
-                {
-                    "name": "Discord", 
-                    "value": discord.__version__, 
-                    "inline": False
-                }
-            ]
 
             prefi = COMMAND_PREFIX
             embed = utils.response.cembed(
@@ -77,16 +56,6 @@ class BotInfo(commands.Cog):
                 description=f"""Prefix is `{prefi}`\nFor more help, type `{prefi}help`""",
                 thumbnail=self.client.user.avatar,
             )
-
-            # {
-            #         "Stats": utils.response.dict2str(
-            #             {
-            #                 "Servers ": len(self.client.guilds),
-            #                 "Users   ": len(self.client.users),
-            #                 "Discord": discord.__version__,
-            #             }
-            #         )
-            # }
 
             await message.channel.send(embed=embed)
 
@@ -129,7 +98,7 @@ class BotInfo(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(name="ping")
-    async def ping(self, ctx: commands.Context) -> None:
+    async def ping_command(self, ctx: commands.Context) -> None:
         """
         Get the bot's websocket and HTTP ping.
 
