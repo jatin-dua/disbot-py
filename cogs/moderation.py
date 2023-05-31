@@ -6,7 +6,6 @@ import discord
 from discord.ext import commands
 
 import utils.dtime
-import utils.errors
 import utils.logger
 import utils.roles as roles
 
@@ -95,9 +94,7 @@ class Moderation(commands.Cog):
         muted_role = roles.get_role(ctx, "muted")
 
         if muted_role is None:
-            muted_role = await roles.create_role(
-                ctx, role="muted", send_messages=False
-            )
+            muted_role = await roles.create_role(ctx, role="muted", send_messages=False)
 
         await member.add_roles(muted_role)
         await ctx.reply(f"Shh! {member.mention} has been muted.")
@@ -191,28 +188,6 @@ class Moderation(commands.Cog):
             return
 
         await self.check_message_flood(message)
-
-    @commands.Cog.listener()
-    async def on_command_error(
-        self, ctx: commands.Context, error: commands.CommandError
-    ) -> None:
-        """
-        Event triggered when a command raises an exception.
-
-        Parameters
-        ----------
-        ctx : commands.Context
-            The invocation context.
-
-        error : commands.CommandError
-            The Error that was raised.
-        """
-        command_name = ctx.command.name if ctx.command else "unknown"
-        error_traceback = "".join(
-            traceback.format_exception(type(error), error, error.__traceback__)
-        )
-        logger.error(f"[command '{command_name}']: {error} \n{error_traceback}")
-        await ctx.reply(utils.errors.get_error_message(error))
 
     async def check_message_flood(self, message: discord.Message) -> None:
         """

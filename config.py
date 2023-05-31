@@ -14,5 +14,6 @@ EXTENSIONS = [
     "cogs.botinfo",
     "cogs.moderation",
     "cogs.message",
-    "cogs.roles"
+    "cogs.roles",
+    "cogs.errorhandler"
 ]
