@@ -1,12 +1,10 @@
 """ This module contains methods for moderating members."""
 from datetime import timedelta
-import traceback
 
 import discord
 from discord.ext import commands
 
-import utils.dtime
-import utils.errors
+import utils.dtime as dtime
 import utils.logger
 import utils.roles as roles
 
@@ -95,9 +93,7 @@ class Moderation(commands.Cog):
         muted_role = roles.get_role(ctx, "muted")
 
         if muted_role is None:
-            muted_role = await roles.create_role(
-                ctx, role="muted", send_messages=False
-            )
+            muted_role = await roles.create_role(ctx, role="muted", send_messages=False)
 
         await member.add_roles(muted_role)
         await ctx.reply(f"Shh! {member.mention} has been muted.")
@@ -142,7 +138,7 @@ class Moderation(commands.Cog):
         time : str
             Represents the time for timeout.
         """
-        await member.timeout(utils.dtime.parse_time(time))
+        await member.timeout(dtime.parse_time(time))
         await ctx.reply(
             f"Timeout in effect for {member.mention}. Take a break from the server!"
         )
@@ -192,28 +188,6 @@ class Moderation(commands.Cog):
 
         await self.check_message_flood(message)
 
-    @commands.Cog.listener()
-    async def on_command_error(
-        self, ctx: commands.Context, error: commands.CommandError
-    ) -> None:
-        """
-        Event triggered when a command raises an exception.
-
-        Parameters
-        ----------
-        ctx : commands.Context
-            The invocation context.
-
-        error : commands.CommandError
-            The Error that was raised.
-        """
-        command_name = ctx.command.name if ctx.command else "unknown"
-        error_traceback = "".join(
-            traceback.format_exception(type(error), error, error.__traceback__)
-        )
-        logger.error(f"[command '{command_name}']: {error} \n{error_traceback}")
-        await ctx.reply(utils.errors.get_error_message(error))
-
     async def check_message_flood(self, message: discord.Message) -> None:
         """
         Checks if the channel is flooded with messages by a member, and take action.
@@ -237,15 +211,19 @@ class Moderation(commands.Cog):
             await message.author.timeout(TIME)
 
     def get_warns(self, member_id: int) -> int:
+        """Gets the number of warns a discord member has."""
         return self.warns_count.get(member_id, 0)
 
     def add_warn(self, member_id: int) -> None:
+        """Increase the count of discord member warns."""
         self.warns_count[member_id] = self.warns_count.get(member_id, 0) + 1
 
     def add_message_count(self, member_id: int) -> None:
+        """Increase the count of messages a member has sent consecutively."""
         self.message_count[member_id] = self.message_count.get(member_id, 0) + 1
 
     def clear_message_count(self, member_id: int) -> None:
+        """Reset the count of messages a member has sent."""
         del self.message_count[member_id]
 
 

@@ -1,7 +1,9 @@
+""" This module contains utilities for logging."""
 import logging
 
 
 def setup_logging(*, func: str) -> logging.Logger:
+    """Sets up logging in the application."""
     logger = logging.getLogger(func)
     logger.setLevel(logging.DEBUG)
 

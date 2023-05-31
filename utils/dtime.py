@@ -1,3 +1,4 @@
+""" This module contains utilities for date and time."""
 import datetime
 
 UNITS = {
@@ -8,6 +9,7 @@ UNITS = {
 }
 
 def parse_time(time: str) -> datetime.timedelta:
+    """Parse time string to timedelta"""
     *qty, unit = time
     qty = float("".join(qty))
 

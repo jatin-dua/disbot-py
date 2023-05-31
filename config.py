@@ -13,5 +13,7 @@ COMMAND_PREFIX = "$"
 EXTENSIONS = [
     "cogs.botinfo",
     "cogs.moderation",
-    "cogs.message"
+    "cogs.message",
+    "cogs.roles",
+    "cogs.errorhandler"
 ]
