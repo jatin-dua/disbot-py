@@ -1,5 +1,7 @@
+""" This module contains utilities for error handling."""
 import discord
 from discord.ext import commands
+
 from config import COMMAND_PREFIX
 
 ERROR_MESSAGES = {

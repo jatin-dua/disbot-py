@@ -1,3 +1,4 @@
+""" This module contains utilities for bot responses."""
 import random
 from typing import Any
 
@@ -5,7 +6,7 @@ import discord
 
 
 def get_random_greeting() -> str:
-    """Returns a random greeting string"""
+    """Returns a random greeting string."""
     greetings = ["Hello", "Hi", "Hey there", "Greetings", "Salutations", "Howdy"]
 
     return random.choice(greetings)
@@ -53,7 +54,3 @@ def cembed(
             embed.add_field(**field)
 
     return embed
-
-def dict2str(d: dict):
-    return "\n".join(f"`{i.upper()}: ` {j}" for i, j in d.items())
-

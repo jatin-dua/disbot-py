@@ -1,5 +1,4 @@
-import traceback
-
+""" This module contains methods for managing member roles."""
 import discord
 from discord.ext import commands
 
@@ -17,6 +16,20 @@ class RoleCommands(commands.Cog):
     async def add_role_command(
         self, ctx: commands.Context, member: discord.Member, role: str
     ) -> None:
+        """
+        Adds a role to the discord member.
+
+        Parameters
+        ----------
+        ctx : commands.Context
+            Represents the Command invocation context.
+
+        member : discord.Member
+            Represents a Discord member to a Guild.
+
+        role : str
+            Represents a Server role.
+        """
         role = roles.get_role(ctx, role)
 
         if role is None:
@@ -29,10 +42,25 @@ class RoleCommands(commands.Cog):
     async def remove_role_command(
         self, ctx: commands.Context, member: discord.Member, role: str
     ) -> None:
+        """
+        Removes a specified role from the discord member.
+
+        Parameters
+        ----------
+        ctx : commands.Context
+            Represents the Command invocation context.
+
+        member : discord.Member
+            Represents a Discord member to a Guild.
+
+        role : str
+            Represents a Server role.
+        """
         role = roles.get_role(ctx, role)
 
         if role is None:
             await ctx.reply(f"Oops! I cannot find the role you're asking for.")
+            return
 
         if role not in member.roles:
             await ctx.reply(f"{member.name} doesn't have the role specified.")

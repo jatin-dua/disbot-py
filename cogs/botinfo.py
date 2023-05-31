@@ -1,3 +1,4 @@
+""" This module contains methods for related to the Bot Information."""
 from time import time
 from typing import Coroutine
 
@@ -27,6 +28,9 @@ class BotInfo(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self) -> None:
+        """
+        Event triggered when the bot is ready for acrion.
+        """
         await self.client.change_presence(activity=discord.Game("Chess"))
         logger.info(f"{self.client.user} is now Online.")
 
@@ -44,7 +48,6 @@ class BotInfo(commands.Cog):
             return
 
         if f"<@{self.client.user.id}>" in message.content:
-            print("Listening to the call")
             # TODO: Implement a custom command prefix
             # prefi = self.client.prefix_dict.get(
             #     message.guild.id if message.guild is not None else None, "'"
@@ -89,6 +92,14 @@ class BotInfo(commands.Cog):
 
     @commands.command(name="info")
     async def info_command(self, ctx: commands.Context) -> None:
+        """
+        Display the bot information.
+
+        Parameters
+        ----------
+        ctx : commands.Context
+            Represents the Command invocation context.
+        """
         fields = [
             {
                 "name": "Name", 
@@ -119,7 +130,14 @@ class BotInfo(commands.Cog):
 
     @commands.command(name="ping")
     async def ping(self, ctx: commands.Context) -> None:
-        """Get the bot's websocket and HTTP ping."""
+        """
+        Get the bot's websocket and HTTP ping.
+
+        Parameters
+        ----------
+        ctx : commands.Context
+            Represents the Command invocation context.
+        """
 
         send = await self.timed(ctx.send("Testing ping..."))
         message = send[0]

@@ -1,3 +1,4 @@
+""" This module contains methods for handling errors."""
 import traceback
 
 import discord
